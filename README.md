@@ -4,9 +4,14 @@
 
 This project is a TypeScript port of the [C++ implementation](https://sourceforge.net/projects/xbrz/) of the xBRZ pixel scaling algorithm, originally created by Zenju. The low-level xBRZ part is a WASM module written in [AssemblyScript](https://www.assemblyscript.org/).
 
-This library works in Node.js and browsers. The binary WASM module is embedded in JavaScript (~20 KiB), so you don't need to care about how the browser finds the WASM file.
 
-The performance is pretty much the same as the original C++ implementation.
+## Features
+
+* Supports scaling factors 2-6.
+* Supports alpha transparencies.
+* Works in Node.js and browsers.
+* Performance is pretty much the same as the original C++ implementation.
+* The binary WASM module is embedded in JavaScript (~20 KiB), so you don't need to care about how the browser finds and loads the WASM file.
 
 
 ## Usage
@@ -46,8 +51,7 @@ If you do lots of scaling operations with the same settings, it is highly recomm
 
 Also note that a scaler reuses the target array returned by the `scale` method. So when you use the same scaler to scale multiple images, process the returned target array immediately or create a copy so the content is not overwritten by the next scaling operation.
 
-WASM memory is automatically freed when the scaler is garbage-collected.
-
+WASM memory is automatically freed once neither the scaler nor the target array returned by `scale()` (or any other view derived from the same buffer) is referenced anymore.
 
 ## Example images
 
