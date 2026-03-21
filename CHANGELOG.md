@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+- Initialize the Y'CbCr lookup table eagerly during scaler setup.
+
 ## [1.1.1] - 2026-03-21
 
 ### Changed

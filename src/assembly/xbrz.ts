@@ -380,21 +380,6 @@ function createLargeDistYCbCrLookupTable(): usize {
 }
 
 /**
- * Lazily initialize and return the Y'CbCr distance lookup table.
- *
- * @returns The pointer to the first `f32` distance entry.
- */
-@inline
-function getDistYCbCrLookupTable(): usize {
-    let tablePtr = distYCbCrLookupTablePtr;
-    if (tablePtr == 0) {
-        tablePtr = configuredLargeLut ? createLargeDistYCbCrLookupTable() : createSmallDistYCbCrLookupTable();
-        distYCbCrLookupTablePtr = tablePtr;
-    }
-    return tablePtr;
-}
-
-/**
  * Compute the buffered analog Y'CbCr distance for the RGB channels only.
  *
  * This helper is used for the opaque fast path where alpha coverage is known to be irrelevant.
@@ -1320,7 +1305,7 @@ export function getTargetPointer(): usize {
  * Configure the scaler instance for one specific source size and scale factor.
  *
  * This allocates the source, target, and pre-processing buffers once, builds the rotation tables for the
- * chosen scale, and initializes the Y'CbCr lookup table on demand.
+ * chosen scale, and initializes the Y'CbCr lookup table eagerly.
  *
  * @param srcWidth  - The source image width.
  * @param srcHeight - The source image height.
@@ -1344,7 +1329,7 @@ export function init(srcWidth: i32, srcHeight: i32, factor: i32, largeLut: bool)
     configuredPreProcPtr = alloc(preProcBytes, 1);
 
     buildRotationOffsets(factor, targetWidth);
-    getDistYCbCrLookupTable();
+    distYCbCrLookupTablePtr = largeLut ? createLargeDistYCbCrLookupTable() : createSmallDistYCbCrLookupTable();
 }
 
 /**
