@@ -4,7 +4,7 @@
 
 This project is a TypeScript port of the [C++ implementation](https://sourceforge.net/projects/xbrz/) of the xBRZ pixel scaling algorithm, originally created by Zenju. The low-level xBRZ part is a WASM module written in [AssemblyScript](https://www.assemblyscript.org/).
 
-This library works in Node.js and browsers. The binary WASM module is embedded in JavaScript (16 KiB), so you don't need to care about how the browser finds the WASM file.
+This library works in Node.js and browsers. The binary WASM module is embedded in JavaScript (~20 KiB), so you don't need to care about how the browser finds the WASM file.
 
 The performance is pretty much the same as the original C++ implementation.
 
