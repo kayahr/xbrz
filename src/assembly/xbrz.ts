@@ -124,6 +124,9 @@ let configuredSourceHeight: i32 = 0;
 /** Configured xBRZ scale factor. */
 let configuredScaleFactor: i32 = 0;
 
+/** Whether the configured scaler should use the full 8-bit Y'CbCr lookup table. */
+let configuredLargeLut = false;
+
 /** Pointer to the lazily created Y'CbCr distance lookup table. */
 let distYCbCrLookupTablePtr: usize = 0;
 
@@ -327,7 +330,34 @@ function offsetSet(offsetsPtr: usize, index: i32, value: i32): void {
  *
  * @returns The pointer to the first `f32` distance entry.
  */
-function createDistYCbCrLookupTable(): usize {
+function createSmallDistYCbCrLookupTable(): usize {
+    const tablePtr = alloc(32 * 32 * 32 * sizeof<f32>(), alignof<f32>());
+    for (let rIndex = 0; rIndex < 32; rIndex++) {
+        const rDiff = (((rIndex << 3) << 24) >> 24) * 2;
+        const rBase = kR * <f64>rDiff;
+        for (let gIndex = 0; gIndex < 32; gIndex++) {
+            const gDiff = (((gIndex << 3) << 24) >> 24) * 2;
+            const gBase = kG * <f64>gDiff;
+            for (let bIndex = 0; bIndex < 32; bIndex++) {
+                const bDiff = (((bIndex << 3) << 24) >> 24) * 2;
+                const y = rBase + gBase + kB * <f64>bDiff;
+                const cb = scaleB * (<f64>bDiff - y);
+                const cr = scaleR * (<f64>rDiff - y);
+                const tableIndex = (rIndex << 10) | (gIndex << 5) | bIndex;
+                const distance = Math.sqrt((y * y) + (cb * cb) + (cr * cr));
+                store<f32>(tablePtr + (<usize>tableIndex << 2), <f32>distance);
+            }
+        }
+    }
+    return tablePtr;
+}
+
+/**
+ * Create the full 8-bit analog Y'CbCr distance lookup table in linear memory.
+ *
+ * @returns The pointer to the first `f32` distance entry.
+ */
+function createLargeDistYCbCrLookupTable(): usize {
     const tablePtr = alloc(256 * 256 * 256 * sizeof<f32>(), alignof<f32>());
     for (let rIndex = 0; rIndex < 256; rIndex++) {
         const rDiff = ((rIndex << 24) >> 24) * 2;
@@ -354,10 +384,11 @@ function createDistYCbCrLookupTable(): usize {
  *
  * @returns The pointer to the first `f32` distance entry.
  */
+@inline
 function getDistYCbCrLookupTable(): usize {
     let tablePtr = distYCbCrLookupTablePtr;
     if (tablePtr == 0) {
-        tablePtr = createDistYCbCrLookupTable();
+        tablePtr = configuredLargeLut ? createLargeDistYCbCrLookupTable() : createSmallDistYCbCrLookupTable();
         distYCbCrLookupTablePtr = tablePtr;
     }
     return tablePtr;
@@ -372,6 +403,7 @@ function getDistYCbCrLookupTable(): usize {
  * @param pixel2 - The second packed pixel.
  * @returns The RGB/Y'CbCr distance between both pixels.
  */
+@inline
 function colorDistanceRGB(pixel1: u32, pixel2: u32): f32 {
     if (pixel1 == pixel2) {
         return 0.0;
@@ -380,7 +412,10 @@ function colorDistanceRGB(pixel1: u32, pixel2: u32): f32 {
     const rIndex = (((getRed(pixel1) - getRed(pixel2)) / 2) | 0) & 0xff;
     const gIndex = (((getGreen(pixel1) - getGreen(pixel2)) / 2) | 0) & 0xff;
     const bIndex = (((getBlue(pixel1) - getBlue(pixel2)) / 2) | 0) & 0xff;
-    return load<f32>(distYCbCrLookupTablePtr + (<usize>((rIndex << 16) | (gIndex << 8) | bIndex) << 2));
+    const tableIndex = configuredLargeLut
+        ? (rIndex << 16) | (gIndex << 8) | bIndex
+        : ((rIndex >> 3) << 10) | ((gIndex >> 3) << 5) | (bIndex >> 3);
+    return load<f32>(distYCbCrLookupTablePtr + (<usize>tableIndex << 2));
 }
 
 /**
@@ -1290,11 +1325,13 @@ export function getTargetPointer(): usize {
  * @param srcWidth  - The source image width.
  * @param srcHeight - The source image height.
  * @param factor    - The xBRZ scale factor.
+ * @param largeLut  - Whether to use the full 8-bit Y'CbCr lookup table.
  */
-export function init(srcWidth: i32, srcHeight: i32, factor: i32): void {
+export function init(srcWidth: i32, srcHeight: i32, factor: i32, largeLut: bool): void {
     configuredSourceWidth = srcWidth;
     configuredSourceHeight = srcHeight;
     configuredScaleFactor = factor;
+    configuredLargeLut = largeLut;
 
     const sourceBytes = srcWidth * srcHeight * 4;
     const targetWidth = srcWidth * factor;

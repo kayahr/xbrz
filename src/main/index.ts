@@ -4,3 +4,4 @@
  */
 
 export { Scaler } from "./Scaler.ts";
+export type { ScalerOptions } from "./Scaler.ts";

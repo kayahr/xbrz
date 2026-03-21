@@ -5,6 +5,19 @@
 
 import xbrzWasm from "../../lib/main/xbrz.wasm.js";
 
+/**
+ * Optional scaler configuration.
+ */
+export interface ScalerOptions {
+    /**
+     * Use the full 8-bit Y'CbCr lookup table.
+     *
+     * `false` uses the much smaller 5-bit lookup table (128KiB) and is the default, matching the Rust port.
+     * `true` uses the full 8-bit lookup table (64 MiB) for maximum precision at a much higher memory cost.
+     */
+    readonly largeLut?: boolean;
+}
+
 /** Exports of the wasm module */
 type WasmExports = {
     /** The internal wasm memory. */
@@ -16,8 +29,9 @@ type WasmExports = {
      * @param sourceWidth  - The source image width in pixels (0-8192). Fractional parts are discarded.
      * @param sourceHeight - The source image height in pixels (0-8192). Fractional parts are discarded.
      * @param factor       - The scale factor. Must be 2, 3, 4, 5 or 6.
+     * @param largeLut     - Whether to use the full 8-bit Y'CbCr lookup table.
      */
-    init(sourceWidth: number, sourceHeight: number, factor: number): void;
+    init(sourceWidth: number, sourceHeight: number, factor: number, largeLut: boolean): void;
 
     /** @returns The source image pointer. */
     getSourcePointer(): number;
@@ -62,9 +76,10 @@ export class Scaler {
      * @param sourceWidth  - The source image width in pixels (0-8192). Fractional parts are discarded.
      * @param sourceHeight - The source image height in pixels (0-8192). Fractional parts are discarded.
      * @param factor       - The scale factor. Must be 2, 3, 4, 5 or 6.
-     * @throws {@link !RangeError} if width, height or scale factor is invalid.
+     * @param options      - Optional scaler configuration. `largeLut` defaults to `false`.
+     * @throws {@link !RangeError} if width, height, scale factor or `largeLut` is invalid.
      */
-    public constructor(sourceWidth: number, sourceHeight: number, factor: number) {
+    public constructor(sourceWidth: number, sourceHeight: number, factor: number, { largeLut = false }: ScalerOptions = {}) {
         if (!(sourceWidth >= 0 && sourceWidth <= MAX_SOURCE_DIMENSION)) {
             throw new RangeError(`Source width must be 0-${MAX_SOURCE_DIMENSION} but is ${sourceWidth}`);
         }
@@ -81,7 +96,7 @@ export class Scaler {
         const sourceBytes = this.#sourceBytes = intSourceWidth * intSourceHeight * 4;
         const targetWidth = this.#targetWidth = intSourceWidth * factor;
         const targetHeight = this.#targetHeight = intSourceHeight * factor;
-        wasm.init(intSourceWidth, intSourceHeight, factor);
+        wasm.init(intSourceWidth, intSourceHeight, factor, largeLut);
         this.#source = new Uint8ClampedArray(wasm.memory.buffer, wasm.getSourcePointer(), sourceBytes);
         this.#target = new Uint8ClampedArray(wasm.memory.buffer, wasm.getTargetPointer(), targetWidth * targetHeight * 4);
     }

@@ -23,7 +23,7 @@ And then use it like this:
 import { Scaler } from "@kayahr/xbrz";
 
 // Create a scaler for a given source image size and scale factor
-const scaler = new Scaler(256, 256, 3);
+const scaler = new Scaler(96, 84, 3);
 
 // Scale the image. Source and target are RGBA pixel
 // data in a Uint8ClampedArray (like `ImageData#data`)
@@ -36,9 +36,18 @@ console.log(`Scale factor: ${scaler.factor}`);
 console.log(`Target size: ${scaler.targetWidth} x ${scaler.targetHeight}`);
 ```
 
-Note that each scaler uses a separate WASM module instance with memory created and initialized for the given source size and scale factor. Each WASM module instance creates and caches a 64MB lookup table for better performance. If you do lots of scaling operations with the same settings, it is highly recommended to reuse the scaler instance. WASM memory is automatically freed when the scaler is garbage-collected.
+Note that each scaler uses a separate WASM module instance with memory created and initialized for the given source size, scale factor, and LUT mode. Each WASM module instance creates and caches a Y'CbCr lookup table for better performance. By default, this uses a 5-bit lookup table (~128 KiB), matching the Rust port. You can opt into the larger 8-bit lookup table (~64 MiB) by setting the `largeLut` option to `true`:
+
+```typescript
+const preciseScaler = new Scaler(96, 84, 3, { largeLut: true });
+```
+
+If you do lots of scaling operations with the same settings, it is highly recommended to reuse the scaler instance, especially when you use the large LUT because creating the lookup table takes time and allocates additional memory per scaler.
 
 Also note that a scaler reuses the target array returned by the `scale` method. So when you use the same scaler to scale multiple images, process the returned target array immediately or create a copy so the content is not overwritten by the next scaling operation.
+
+WASM memory is automatically freed when the scaler is garbage-collected.
+
 
 ## Example images
 
