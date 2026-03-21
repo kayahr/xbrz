@@ -1,0 +1,17 @@
+{
+    "entries": [
+        "src/assembly/xbrz.ts"
+    ],
+    "targets": {
+        "release": {
+            "outFile": "lib/assembly/xbrz.wasm",
+            "runtime": "stub",
+            "optimizeLevel": 3,
+            "shrinkLevel": 0,
+            "noAssert": true,
+            "pedantic": true,
+            "noUnsafe": false,
+            "uncheckedBehavior": "always"
+        }
+    }
+}

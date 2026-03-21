@@ -1,0 +1,10 @@
+{
+    "extends": "assemblyscript/std/assembly.json",
+    "compilerOptions": {
+        "noEmit": true,
+        "noCheck": true
+    },
+    "include": [
+        "./**/*.ts"
+    ]
+}
