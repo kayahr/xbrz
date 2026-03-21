@@ -1,7 +1,7 @@
 {
     "$schema": "https://json.schemastore.org/package",
     "name": "@kayahr/xbrz",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "type": "module",
     "description": "A high-quality image upscaling filter for creating beautiful HD representations from low-resolution images",
     "keywords": [
