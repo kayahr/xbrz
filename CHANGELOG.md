@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+#### [1.1.0] - 2026-03-21
 
 ### Added
 - Add `largeLut` option to switch to larger 8-bit precision LUT.
