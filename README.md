@@ -62,7 +62,7 @@ Also see the [images](https://github.com/kayahr/xbrz/tree/main/src/test/images) 
   </tr>
   <tr>
     <td width="50%"><img src="./src/test/images/sample1-nn-x3.png" alt="Sample one, nearest neighbor scaled 3x" style="width: 573px; height: auto" /></td>
-    <td width="50%"><img src="./src/test/images/sample1-xbrz-x3.png" style="width: 573px; height: auto" alt="Sample one, xBRZ scaled 3x" /></td>
+    <td width="50%"><img src="./src/test/images/sample1-xbrz-5b-x3.png" style="width: 573px; height: auto" alt="Sample one, xBRZ scaled 3x with 5-bit LUT" /></td>
   </tr>
 </table>
 
@@ -75,7 +75,7 @@ Also see the [images](https://github.com/kayahr/xbrz/tree/main/src/test/images) 
   </tr>
   <tr>
     <td width="50%"><img src="./src/test/images/sample2-nn-x3.png" alt="Sample 2, nearest neighbor scaled 3x" style="width: 573px; height: auto" /></td>
-    <td width="50%"><img src="./src/test/images/sample2-xbrz-x3.png" alt="Sample 2, xBRZ scaled 3x" style="width: 573px; height: auto" /></td>
+    <td width="50%"><img src="./src/test/images/sample2-xbrz-5b-x3.png" alt="Sample 2, xBRZ scaled 3x with 5-bit LUT" style="width: 573px; height: auto" /></td>
   </tr>
 </table>
 
@@ -90,9 +90,9 @@ Also see the [images](https://github.com/kayahr/xbrz/tree/main/src/test/images) 
   </tr>
   <tr>
     <td style="width: 25%; text-align: center"><img src="./src/test/images/yoshi-nn-x6.png" alt="Yoshi, nearest neighbor scaled 6x" style="width: 132px; height: auto" /></td>
-    <td style="width: 25%; text-align: center"><img src="./src/test/images/yoshi-xbrz-x6.png" alt="Yoshi, xBRZ scaled 6x" style="width: 132px; height: auto" /></td>
+    <td style="width: 25%; text-align: center"><img src="./src/test/images/yoshi-xbrz-5b-x6.png" alt="Yoshi, xBRZ scaled 6x with 5-bit LUT" style="width: 132px; height: auto" /></td>
     <td style="width: 25%; text-align: center"><img src="./src/test/images/yoshi-transparent-nn-x6.png" alt="Transparent Yoshi, nearest neighbor scaled 6x" style="width: 132px; height: auto" /></td>
-    <td style="width: 25%; text-align: center"><img src="./src/test/images/yoshi-transparent-xbrz-x6.png" alt="Transparent Yoshi, xBRZ scaled 6x" style="width: 132px; height: auto" /></td>
+    <td style="width: 25%; text-align: center"><img src="./src/test/images/yoshi-transparent-xbrz-5b-x6.png" alt="Transparent Yoshi, xBRZ scaled 6x with 5-bit LUT" style="width: 132px; height: auto" /></td>
   </tr>
 </table>
 

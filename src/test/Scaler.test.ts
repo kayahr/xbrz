@@ -78,160 +78,319 @@ describe("Scaler", () => {
             const scaler2 = new Scaler(sample2.width, sample2.height, 2, { largeLut: true });
             const target1 = scaler1.scale(sample1.data);
             const target2 = scaler2.scale(sample2.data);
-            await assertMatchImage(createImageData(sample1.width * 2, sample1.height * 2, new Uint8ClampedArray(target1)), "sample1-xbrz-x2.png");
-            await assertMatchImage(createImageData(sample2.width * 2, sample2.height * 2, new Uint8ClampedArray(target2)), "sample2-xbrz-x2.png");
+            await assertMatchImage(createImageData(sample1.width * 2, sample1.height * 2, new Uint8ClampedArray(target1)), "sample1-xbrz-8b-x2.png");
+            await assertMatchImage(createImageData(sample2.width * 2, sample2.height * 2, new Uint8ClampedArray(target2)), "sample2-xbrz-8b-x2.png");
         });
 
         describe("sample1", () => {
-            it("scales correctly with factor 2", async () => {
-                const scaler = new Scaler(sample1.width, sample1.height, 2, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-x2.png");
+            describe("with small LUT", () => {
+                it("scales correctly with factor 2", async () => {
+                    const scaler = new Scaler(sample1.width, sample1.height, 2);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-5b-x2.png");
+                });
+                it("scales correctly with factor 3", async () => {
+                    const scaler = new Scaler(sample1.width, sample1.height, 3);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-5b-x3.png");
+                });
+                it("scales correctly with factor 4", async () => {
+                    const scaler = new Scaler(sample1.width, sample1.height, 4);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-5b-x4.png");
+                });
+                it("scales correctly with factor 5", async () => {
+                    const scaler = new Scaler(sample1.width, sample1.height, 5);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-5b-x5.png");
+                });
+                it("scales correctly with factor 6", async () => {
+                    const scaler = new Scaler(sample1.width, sample1.height, 6);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-5b-x6.png");
+                });
             });
-            it("scales correctly with factor 3", async () => {
-                const scaler = new Scaler(sample1.width, sample1.height, 3, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-x3.png");
-            });
-            it("scales correctly with factor 4", async () => {
-                const scaler = new Scaler(sample1.width, sample1.height, 4, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-x4.png");
-            });
-            it("scales correctly with factor 5", async () => {
-                const scaler = new Scaler(sample1.width, sample1.height, 5, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-x5.png");
-            });
-            it("scales correctly with factor 6", async () => {
-                const scaler = new Scaler(sample1.width, sample1.height, 6, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-x6.png");
+            describe("with large LUT", () => {
+                it("scales correctly with factor 2", async () => {
+                    const scaler = new Scaler(sample1.width, sample1.height, 2, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-8b-x2.png");
+                });
+                it("scales correctly with factor 3", async () => {
+                    const scaler = new Scaler(sample1.width, sample1.height, 3, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-8b-x3.png");
+                });
+                it("scales correctly with factor 4", async () => {
+                    const scaler = new Scaler(sample1.width, sample1.height, 4, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-8b-x4.png");
+                });
+                it("scales correctly with factor 5", async () => {
+                    const scaler = new Scaler(sample1.width, sample1.height, 5, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-8b-x5.png");
+                });
+                it("scales correctly with factor 6", async () => {
+                    const scaler = new Scaler(sample1.width, sample1.height, 6, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample1.data)), "sample1-xbrz-8b-x6.png");
+                });
             });
         });
 
         describe("sample2", () => {
-            it("scales correctly with factor 2", async () => {
-                const scaler = new Scaler(sample2.width, sample2.height, 2, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-x2.png");
+            describe("with small LUT", () => {
+                it("scales correctly with factor 2", async () => {
+                    const scaler = new Scaler(sample2.width, sample2.height, 2);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-5b-x2.png");
+                });
+                it("scales correctly with factor 3", async () => {
+                    const scaler = new Scaler(sample2.width, sample2.height, 3);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-5b-x3.png");
+                });
+                it("scales correctly with factor 4", async () => {
+                    const scaler = new Scaler(sample2.width, sample2.height, 4);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-5b-x4.png");
+                });
+                it("scales correctly with factor 5", async () => {
+                    const scaler = new Scaler(sample2.width, sample2.height, 5);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-5b-x5.png");
+                });
+                it("scales correctly with factor 6", async () => {
+                    const scaler = new Scaler(sample2.width, sample2.height, 6);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-5b-x6.png");
+                });
             });
-            it("scales correctly with factor 3", async () => {
-                const scaler = new Scaler(sample2.width, sample2.height, 3, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-x3.png");
-            });
-            it("scales correctly with factor 4", async () => {
-                const scaler = new Scaler(sample2.width, sample2.height, 4, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-x4.png");
-            });
-            it("scales correctly with factor 5", async () => {
-                const scaler = new Scaler(sample2.width, sample2.height, 5, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-x5.png");
-            });
-            it("scales correctly with factor 6", async () => {
-                const scaler = new Scaler(sample2.width, sample2.height, 6, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-x6.png");
+            describe("with large LUT", () => {
+                it("scales correctly with factor 2", async () => {
+                    const scaler = new Scaler(sample2.width, sample2.height, 2, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-8b-x2.png");
+                });
+                it("scales correctly with factor 3", async () => {
+                    const scaler = new Scaler(sample2.width, sample2.height, 3, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-8b-x3.png");
+                });
+                it("scales correctly with factor 4", async () => {
+                    const scaler = new Scaler(sample2.width, sample2.height, 4, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-8b-x4.png");
+                });
+                it("scales correctly with factor 5", async () => {
+                    const scaler = new Scaler(sample2.width, sample2.height, 5, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-8b-x5.png");
+                });
+                it("scales correctly with factor 6", async () => {
+                    const scaler = new Scaler(sample2.width, sample2.height, 6, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(sample2.data)), "sample2-xbrz-8b-x6.png");
+                });
             });
         });
 
         describe("yoshi", () => {
-            it("scales correctly with factor 2", async () => {
-                const scaler = new Scaler(yoshi.width, yoshi.height, 2, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-x2.png");
+            describe("with small LUT", () => {
+                it("scales correctly with factor 2", async () => {
+                    const scaler = new Scaler(yoshi.width, yoshi.height, 2);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-5b-x2.png");
+                });
+                it("scales correctly with factor 3", async () => {
+                    const scaler = new Scaler(yoshi.width, yoshi.height, 3);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-5b-x3.png");
+                });
+                it("scales correctly with factor 4", async () => {
+                    const scaler = new Scaler(yoshi.width, yoshi.height, 4);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-5b-x4.png");
+                });
+                it("scales correctly with factor 5", async () => {
+                    const scaler = new Scaler(yoshi.width, yoshi.height, 5);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-5b-x5.png");
+                });
+                it("scales correctly with factor 6", async () => {
+                    const scaler = new Scaler(yoshi.width, yoshi.height, 6);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-5b-x6.png");
+                });
             });
-            it("scales correctly with factor 3", async () => {
-                const scaler = new Scaler(yoshi.width, yoshi.height, 3, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-x3.png");
-            });
-            it("scales correctly with factor 4", async () => {
-                const scaler = new Scaler(yoshi.width, yoshi.height, 4, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-x4.png");
-            });
-            it("scales correctly with factor 5", async () => {
-                const scaler = new Scaler(yoshi.width, yoshi.height, 5, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-x5.png");
-            });
-            it("scales correctly with factor 6", async () => {
-                const scaler = new Scaler(yoshi.width, yoshi.height, 6, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-x6.png");
+            describe("with large LUT", () => {
+                it("scales correctly with factor 2", async () => {
+                    const scaler = new Scaler(yoshi.width, yoshi.height, 2, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-8b-x2.png");
+                });
+                it("scales correctly with factor 3", async () => {
+                    const scaler = new Scaler(yoshi.width, yoshi.height, 3, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-8b-x3.png");
+                });
+                it("scales correctly with factor 4", async () => {
+                    const scaler = new Scaler(yoshi.width, yoshi.height, 4, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-8b-x4.png");
+                });
+                it("scales correctly with factor 5", async () => {
+                    const scaler = new Scaler(yoshi.width, yoshi.height, 5, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-8b-x5.png");
+                });
+                it("scales correctly with factor 6", async () => {
+                    const scaler = new Scaler(yoshi.width, yoshi.height, 6, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshi.data)), "yoshi-xbrz-8b-x6.png");
+                });
             });
         });
 
         describe("yoshi-transparent", () => {
-            it("scales correctly with factor 2", async () => {
-                const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 2, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
-                    "yoshi-transparent-xbrz-x2.png");
+            describe("with small LUT", () => {
+                it("scales correctly with factor 2", async () => {
+                    const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 2);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
+                        "yoshi-transparent-xbrz-5b-x2.png");
+                });
+                it("scales correctly with factor 3", async () => {
+                    const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 3);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
+                        "yoshi-transparent-xbrz-5b-x3.png");
+                });
+                it("scales correctly with factor 4", async () => {
+                    const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 4);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
+                        "yoshi-transparent-xbrz-5b-x4.png");
+                });
+                it("scales correctly with factor 5", async () => {
+                    const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 5);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
+                        "yoshi-transparent-xbrz-5b-x5.png");
+                });
+                it("scales correctly with factor 6", async () => {
+                    const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 6);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
+                        "yoshi-transparent-xbrz-5b-x6.png");
+                });
             });
-            it("scales correctly with factor 3", async () => {
-                const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 3, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
-                    "yoshi-transparent-xbrz-x3.png");
-            });
-            it("scales correctly with factor 4", async () => {
-                const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 4, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
-                    "yoshi-transparent-xbrz-x4.png");
-            });
-            it("scales correctly with factor 5", async () => {
-                const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 5, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
-                    "yoshi-transparent-xbrz-x5.png");
-            });
-            it("scales correctly with factor 6", async () => {
-                const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 6, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
-                    "yoshi-transparent-xbrz-x6.png");
+            describe("with large LUT", () => {
+                it("scales correctly with factor 2", async () => {
+                    const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 2, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
+                        "yoshi-transparent-xbrz-8b-x2.png");
+                });
+                it("scales correctly with factor 3", async () => {
+                    const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 3, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
+                        "yoshi-transparent-xbrz-8b-x3.png");
+                });
+                it("scales correctly with factor 4", async () => {
+                    const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 4, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
+                        "yoshi-transparent-xbrz-8b-x4.png");
+                });
+                it("scales correctly with factor 5", async () => {
+                    const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 5, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
+                        "yoshi-transparent-xbrz-8b-x5.png");
+                });
+                it("scales correctly with factor 6", async () => {
+                    const scaler = new Scaler(yoshiTransparent.width, yoshiTransparent.height, 6, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(yoshiTransparent.data)),
+                        "yoshi-transparent-xbrz-8b-x6.png");
+                });
             });
         });
 
         describe("transparent-edge-case", () => {
-            it("scales correctly with factor 2", async () => {
-                const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 2, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
-                    "transparent-edge-case-xbrz-x2.png");
+            describe("with small LUT", () => {
+                it("scales correctly with factor 2", async () => {
+                    const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 2);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
+                        "transparent-edge-case-xbrz-5b-x2.png");
+                });
+                it("scales correctly with factor 3", async () => {
+                    const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 3);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
+                        "transparent-edge-case-xbrz-5b-x3.png");
+                });
+                it("scales correctly with factor 4", async () => {
+                    const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 4);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
+                        "transparent-edge-case-xbrz-5b-x4.png");
+                });
+                it("scales correctly with factor 5", async () => {
+                    const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 5);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
+                        "transparent-edge-case-xbrz-5b-x5.png");
+                });
+                it("scales correctly with factor 6", async () => {
+                    const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 6);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
+                        "transparent-edge-case-xbrz-5b-x6.png");
+                });
             });
-            it("scales correctly with factor 3", async () => {
-                const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 3, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
-                    "transparent-edge-case-xbrz-x3.png");
-            });
-            it("scales correctly with factor 4", async () => {
-                const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 4, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
-                    "transparent-edge-case-xbrz-x4.png");
-            });
-            it("scales correctly with factor 5", async () => {
-                const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 5, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
-                    "transparent-edge-case-xbrz-x5.png");
-            });
-            it("scales correctly with factor 6", async () => {
-                const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 6, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
-                    "transparent-edge-case-xbrz-x6.png");
+            describe("with large LUT", () => {
+                it("scales correctly with factor 2", async () => {
+                    const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 2, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
+                        "transparent-edge-case-xbrz-8b-x2.png");
+                });
+                it("scales correctly with factor 3", async () => {
+                    const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 3, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
+                        "transparent-edge-case-xbrz-8b-x3.png");
+                });
+                it("scales correctly with factor 4", async () => {
+                    const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 4, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
+                        "transparent-edge-case-xbrz-8b-x4.png");
+                });
+                it("scales correctly with factor 5", async () => {
+                    const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 5, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
+                        "transparent-edge-case-xbrz-8b-x5.png");
+                });
+                it("scales correctly with factor 6", async () => {
+                    const scaler = new Scaler(transparentEdgeCase.width, transparentEdgeCase.height, 6, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(transparentEdgeCase.data)),
+                        "transparent-edge-case-xbrz-8b-x6.png");
+                });
             });
         });
 
         describe("alpha-transparency", () => {
-            it("scales correctly with factor 2", async () => {
-                const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 2, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
-                    "alpha-transparency-xbrz-x2.png");
+            describe("with small LUT", () => {
+                it("scales correctly with factor 2", async () => {
+                    const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 2);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
+                        "alpha-transparency-xbrz-5b-x2.png");
+                });
+                it("scales correctly with factor 3", async () => {
+                    const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 3);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
+                        "alpha-transparency-xbrz-5b-x3.png");
+                });
+                it("scales correctly with factor 4", async () => {
+                    const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 4);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
+                        "alpha-transparency-xbrz-5b-x4.png");
+                });
+                it("scales correctly with factor 5", async () => {
+                    const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 5);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
+                        "alpha-transparency-xbrz-5b-x5.png");
+                });
+                it("scales correctly with factor 6", async () => {
+                    const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 6);
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
+                        "alpha-transparency-xbrz-5b-x6.png");
+                });
             });
-            it("scales correctly with factor 3", async () => {
-                const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 3, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
-                    "alpha-transparency-xbrz-x3.png");
-            });
-            it("scales correctly with factor 4", async () => {
-                const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 4, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
-                    "alpha-transparency-xbrz-x4.png");
-            });
-            it("scales correctly with factor 5", async () => {
-                const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 5, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
-                    "alpha-transparency-xbrz-x5.png");
-            });
-            it("scales correctly with factor 6", async () => {
-                const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 6, { largeLut: true });
-                await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
-                    "alpha-transparency-xbrz-x6.png");
+            describe("with large LUT", () => {
+                it("scales correctly with factor 2", async () => {
+                    const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 2, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
+                        "alpha-transparency-xbrz-8b-x2.png");
+                });
+                it("scales correctly with factor 3", async () => {
+                    const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 3, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
+                        "alpha-transparency-xbrz-8b-x3.png");
+                });
+                it("scales correctly with factor 4", async () => {
+                    const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 4, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
+                        "alpha-transparency-xbrz-8b-x4.png");
+                });
+                it("scales correctly with factor 5", async () => {
+                    const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 5, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
+                        "alpha-transparency-xbrz-8b-x5.png");
+                });
+                it("scales correctly with factor 6", async () => {
+                    const scaler = new Scaler(alphaTransparency.width, alphaTransparency.height, 6, { largeLut: true });
+                    await assertMatchImage(createImageData(scaler.targetWidth, scaler.targetHeight, scaler.scale(alphaTransparency.data)),
+                        "alpha-transparency-xbrz-8b-x6.png");
+                });
             });
         });
     });
