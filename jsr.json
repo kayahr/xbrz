@@ -1,6 +1,6 @@
 {
     "name": "@kayahr/xbrz",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "exports": "./src/main/index.ts",
     "publish": {
         "include": [
