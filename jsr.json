@@ -1,0 +1,12 @@
+{
+    "name": "@kayahr/xbrz",
+    "version": "1.1.1",
+    "exports": "./src/main/index.ts",
+    "publish": {
+        "include": [
+            "README.md",
+            "lib/main/xbrz.wasm.js",
+            "src/main"
+        ]
+    }
+}
