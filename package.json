@@ -56,7 +56,7 @@
         "@kayahr/typedoc": "0.28.18-bundle.1",
         "@types/node": "25.5.0",
         "@types/pngjs": "6.0.5",
-        "assemblyscript": "^0.28.12",
+        "assemblyscript": "^0.28.13",
         "pixelmatch": "7.1.0",
         "pngjs": "7.0.0",
         "typescript": "6.0.2"
