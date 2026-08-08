@@ -17,6 +17,6 @@ describe("index", () => {
         });
 
         // Check compile-time exports
-        ((): ScalerOptions => (({} as exports.ScalerOptions)))();
+        ((): ScalerOptions => ((0 as exports.ScalerOptions)))();
     });
 });
